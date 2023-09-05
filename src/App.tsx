@@ -8,7 +8,7 @@ import './App.css'
 
 // Import Pages
 import Home from './pages/Home';
-import Article from './content/Article';
+import DynamicArticle from './content/DynamicArticle';
 
 function App() {
 
@@ -17,7 +17,7 @@ function App() {
       <Router>
         <Routes>
           <Route path='/' element={<Home/>}/>
-          <Route path="/blog/:slug" element={<Article />} />
+          <Route path="/blog/:slug" element={<DynamicArticle/>} />
         </Routes>
       </Router>
     </HelmetProvider>
