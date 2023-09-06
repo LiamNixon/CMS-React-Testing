@@ -1,15 +1,8 @@
 // Import Packages
 import React from "react";
 
-// Component Type
-interface HeadingProps {
-  data: {
-    fields: {
-      headingType: string;
-      headingTitle: string;
-    };
-  };
-}
+// Import Types
+import { HeadingSkeleton } from "./types/SkeletonTypes";
 
 // Define Dynamic Element Map
 const headingMap: {
@@ -32,8 +25,8 @@ const headingMap: {
 };
 
 // Render the Dynamic Component
-const Heading: React.FC<HeadingProps> = ({ data }) => {
-  const { headingType, headingTitle } = data.fields;
+const Heading: React.FC<HeadingSkeleton> = ({ fields }) => {
+  const { headingType, headingTitle } = fields;
 
   return (
     <>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // Import Packages
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -5,10 +6,9 @@ import { useParams } from "react-router-dom";
 
 // Import Utility
 import client from "@/lib/Contentful";
-import componentMap from "./ComponentMapping";
 
 // Import Types
-import BlogPageSkeleton from "./types/SkeletonTypes";
+import { BlogPageSkeleton } from "./types/SkeletonTypes";
 
 // Import Dynamic Classes
 import Heading from "./Heading";
@@ -16,8 +16,15 @@ import Heading from "./Heading";
 const DynamicArticle: React.FC = () => {
   // Component state
   const [data, setData] = useState<BlogPageSkeleton | null>(null);
+
   // Capture the page Slug
   const { slug } = useParams();
+
+  // Component Mapping
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const componentMapping: {[key: string]: React.FC<any>} = {
+  heading: Heading
+  };
 
   // Fetch data with current URL slug
   useEffect(() => {
@@ -33,8 +40,6 @@ const DynamicArticle: React.FC = () => {
             })
             .then((res) => {
               if (res.items.length > 0) {
-                // console.log(res.items[0])
-                // console.log(componentMap.id[res.items[0].sys.contentType.sys.id]);
                 setData(res.items[0].fields as BlogPageSkeleton);
               }
             });
@@ -46,32 +51,28 @@ const DynamicArticle: React.FC = () => {
     }
   }, [slug]);
 
-  // Check data is fetched
-
-  useEffect(() => {
-    if (data) {
-      console.log(data)
-    }
-  }, [data])
-
   return (
     <>
       <Helmet>
         <title>Blog Page</title>
       </Helmet>
-      {
-        data !== null ?
-        data.map((el) => (
-          React.createElement(
-            componentMap.id[el.sys.contentType.sys.id],
-            {
-              className: `scroll-m-20 ${headingMap.class[headingType]}`,
-            },
-            headingTitle
-          )
-        )) :
-        <span>loading...</span>
-      }
+      {data !== null ? (
+        <ul>
+          {data.pageElements.map((element, index) => {
+            const ComponentToRender = componentMapping[element.sys.contentType.sys.id];
+            if (ComponentToRender) {
+              return (
+                <li key={index}>
+                  <ComponentToRender fields={element.fields} />
+                </li>
+              );
+            }
+            return null;
+          })}
+        </ul>
+      ) : (
+        <span>LOADING...</span>
+      )}
     </>
   );
 };

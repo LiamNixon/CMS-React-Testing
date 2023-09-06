@@ -1,19 +1,24 @@
-type BlogPageSkeleton = {
+export type BlogPageSkeleton = {
   pageTitle: string;
   pageDescription: string;
   pageElements: {
-    items: Array<Reference>;
-  };
+    fields: {
+      [key: string]: string;
+    };
+    sys: {
+      contentType: {
+        sys: {
+          id: string;
+        };
+      };
+    };
+  }[];
   urlSlug: string;
   pageMetaTags: string[];
 };
 
-type Reference = {
-  sys: {
-    type: "Link";
-    linkType: "Entry";
-    id: string; // ID of the referenced entry
+export type HeadingSkeleton = {
+  fields: {
+    [key: string]: string;
   };
 };
-
-export default BlogPageSkeleton;

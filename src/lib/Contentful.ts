@@ -3,8 +3,8 @@ import { createClient } from "contentful";
 
 // Construct Contentful Client for API calls
 const client = createClient({
-  space: 'hcn7d4w6tlrq',
-  accessToken: 'dT1_c6M99hGwfYLsSEimheDkiW4hWG31Zweu4PH2NYM',
+  space: import.meta.env.VITE_CTFL_SPACE_ID,
+  accessToken: import.meta.env.VITE_CTFL_ACCESS_TOKEN,
 });
 
 // Export Client Object
